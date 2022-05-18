@@ -15,6 +15,10 @@ docker run --rm -ti \
      php:8.1-apache
 ```
 
+## Dependencies
+
+- Bootstrap 5.2.0 (jsDelivr)
+
 ## License
 
 The MIT License (MIT)
