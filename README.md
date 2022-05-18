@@ -5,6 +5,16 @@ This is an alternative to
 - http://download.iobroker.net/list.html
 - https://www.iobroker.net/#en/adapters
 
+## Docker
+
+```
+docker run --rm -ti \
+     -p 8000:80 \
+     --name iobroker-adapterlist-php \
+     -v $(pwd):/var/www/html \
+     php:8.1-apache
+```
+
 ## License
 
 The MIT License (MIT)
