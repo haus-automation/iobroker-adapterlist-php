@@ -93,13 +93,17 @@
                         $versionAge = $versionDate->diff(new \DateTime('now'))->days;
                     ?>
                     <tr>
-                        <th scope="row" class="<?php if ($versionAge > 365) : ?>bg-warning <?php elseif (array_key_exists('stable', $info) && $info['version'] === $info['stable']) : ?>bg-success<?php endif; ?>"><?= ++$i ?></th>
+                        <td class="<?php if ($versionAge > 365) : ?>bg-warning <?php elseif (array_key_exists('stable', $info) && $info['version'] === $info['stable']) : ?>bg-success<?php endif; ?>">
+                            <?= ++$i ?>
+                        </td>
                         <td>
                             <img src="<?= $info['extIcon'] ?>" class="img-fluid" style="width: 50px;" />
                             <a href="<?= $info['readme'] ?>"><?= (array_key_exists('titleLang', $info) && is_array($info['titleLang'])) ? $info['titleLang']['en'] : $info['title'] ?></a>
                             (<a href="<?= $info['meta'] ?>">io-package.json</a>)
                         </td>
-                        <td><?= $info['type'] ?></td>
+                        <td>
+                            <?= $info['type'] ?>
+                        </td>
                         <td>
                             Downloads: <?= array_key_exists('stat', $info) ? $info['stat'] : 0 ?><br>
                             Weekly: <?= $info['weekDownloads'] ?: 0 ?>
