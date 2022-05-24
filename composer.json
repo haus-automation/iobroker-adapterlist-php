@@ -1,0 +1,19 @@
+{
+    "name": "mkleine/iobroker-adapterlist",
+    "type": "project",
+    "license": "MIT",
+    "description": "List all ioBroker adapters",
+    "homepage": "https://haus-automatisierung.com",
+    "authors": [
+        {
+            "name": "Matthias Kleine",
+            "email": "info@haus-automatisierung.com",
+            "homepage": "https://haus-automatisierung.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.4",
+        "knplabs/github-api": "^3.6"
+    }
+}

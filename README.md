@@ -8,15 +8,14 @@ This is an alternative to
 ## Docker
 
 ```
-docker run --rm -ti \
-     -p 8000:80 \
-     --name iobroker-adapterlist-php \
-     -v $(pwd):/var/www/html \
-     php:8.1-apache
+docker build --no-cache -t klein0r/php:8.1-apache .
+docker run --rm -ti -p 8000:80 --name iobroker-adapterlist-php -v $(pwd)/index.php:/var/www/html/index.php klein0r/php:8.1-apache
 ```
 
 ## Dependencies
 
+- Docker (optional)
+- PHP 8.1
 - Bootstrap 5.2.0 (jsDelivr)
 
 ## License
