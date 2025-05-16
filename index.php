@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 
         <title>ioBroker Adapter List</title>
     </head>
@@ -11,9 +11,12 @@
         <?php
             $data = null;
 
+            $adaptersAge = [];
+            $nodeVersions = [];
+
             if (!file_exists('sources-dist-latest.json')) {
                 $curl = curl_init();
-                curl_setopt($curl, CURLOPT_URL, 'http://download.iobroker.net/sources-dist-latest.json');
+                curl_setopt($curl, CURLOPT_URL, 'https://repo.iobroker.live/sources-dist-latest.json');
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($curl, CURLOPT_HEADER, false);
                 curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
@@ -79,6 +82,7 @@
                         <th scope="col">#</th>
                         <th scope="col"><a href="?orderBy=name">Adapter</a></th>
                         <th scope="col"><a href="?orderBy=type">Type</a></th>
+                        <th scope="col">Node</th>
                         <th scope="col"><a href="?orderBy=installations">Installs</a></th>
                         <th scope="col">Authors</th>
                         <th scope="col">Versions</th>
@@ -87,14 +91,21 @@
             <tbody>
                 <?php $i = 0; ?>
                 <?php foreach ($adapterJson as $adapter => $info) : ?>
-                    <?php if ($adapter != 'js-controller') : ?>
+                    <?php if ($adapter != 'js-controller' && $adapter != '_repoInfo') : ?>
                     <?php
                         $versionDate = new \DateTime($info['versionDate']);
                         $versionAge = $versionDate->diff(new \DateTime('now'))->days;
+
+                        $ageCategory = floor($versionAge / 365);
+
+                        if (!array_key_exists($ageCategory, $adaptersAge)) {
+                            $adaptersAge[$ageCategory] = 0;
+                        }
+                        $adaptersAge[$ageCategory]++;
                     ?>
                     <tr>
                         <td class="<?php if ($versionAge > 365) : ?>bg-warning <?php elseif (array_key_exists('stable', $info) && $info['version'] === $info['stable']) : ?>bg-success<?php endif; ?>">
-                            <?= ++$i ?>
+                            #<?= ++$i ?>
                         </td>
                         <td>
                             <img src="<?= $info['extIcon'] ?>" class="img-fluid" style="width: 50px;" />
@@ -103,6 +114,20 @@
                         </td>
                         <td>
                             <?= $info['type'] ?>
+                        </td>
+                        <td>
+                            <?php if (array_key_exists('node', $info)) : ?>
+                                <?php
+                                    $nodeVersion = trim(str_replace(['>=', '.0', '.x'], '', $info['node']));
+                                    if (!array_key_exists($nodeVersion, $nodeVersions)) {
+                                        $nodeVersions[$nodeVersion] = 0;
+                                    }
+                                ?>
+                                <?php $nodeVersions[$nodeVersion]++ ?>
+                                <?= $nodeVersion ?>
+                            <?php else : ?>
+                                ??
+                            <?php endif; ?>
                         </td>
                         <td>
                             Downloads: <?= array_key_exists('stat', $info) ? $info['stat'] : 0 ?><br>
@@ -117,8 +142,8 @@
                             <?php endforeach; ?>
                         </td>
                         <td>
-                            published: <?= (new \DateTime($info['published']))->format('d.m.Y') ?><br>
-                            latest: <?= $info['version'] ?> (<?= $versionDate->format('d.m.Y') ?> - <?= $versionAge ?> days)<br>
+                            published: <?= (new \DateTime($info['published'] ?: 'now'))->format('d.m.Y') ?><br>
+                            latest: <?= array_key_exists('version', $info) ? $info['version'] : '??' ?> (<?= $versionDate->format('d.m.Y') ?> - <?= $versionAge ?> days)<br>
                             stable: <?= array_key_exists('stable', $info) ? $info['stable'] : '-' ?>
                         </td>
                     </tr>
@@ -128,6 +153,21 @@
             </table>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+        <p>
+            <ul>
+                <?php ksort($adaptersAge); ?>
+                <?php foreach ($adaptersAge as $years => $count) : ?>
+                    <li><strong><= <?= $years + 1 ?> years:</strong> <?= $count ?> (<?= round($count / $i * 100, 0) ?>%)</li>
+                <?php endforeach; ?>
+            </ul>
+
+            <ul>
+            <?php foreach ($nodeVersions as $nodeVersion => $count) : ?>
+                <li><strong><?= $nodeVersion ?>:</strong> <?= $count ?> (<?= round($count / $i * 100, 0) ?>%)</li>
+            <?php endforeach; ?>
+            </ul>
+        </p>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     </body>
 </html>
