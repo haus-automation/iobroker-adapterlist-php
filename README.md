@@ -18,7 +18,7 @@ Open `http://localhost:8000` afterwards.
 
 - Docker (optional)
 - PHP 8.3
-- Bootstrap 5.2.0 (jsDelivr)
+- Bootstrap 5.3.6 (jsDelivr)
 
 ## License
 
