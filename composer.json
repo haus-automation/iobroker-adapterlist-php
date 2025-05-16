@@ -1,5 +1,5 @@
 {
-    "name": "mkleine/iobroker-adapterlist",
+    "name": "haus-automation/iobroker-adapterlist",
     "type": "project",
     "license": "MIT",
     "description": "List all ioBroker adapters",
@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^7.4",
-        "knplabs/github-api": "^3.6"
+        "guzzlehttp/guzzle": "^7.9",
+        "knplabs/github-api": "^3.16"
     }
 }

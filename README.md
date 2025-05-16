@@ -8,14 +8,16 @@ This is an alternative to
 ## Docker
 
 ```
-docker build --no-cache -t klein0r/php:8.1-apache .
-docker run --rm -ti -p 8000:80 --name iobroker-adapterlist-php -v $(pwd)/index.php:/var/www/html/index.php klein0r/php:8.1-apache
+docker build --no-cache -t haus-automation/iobroker-adapterlist-php:8.3-apache .
+docker run --rm -ti -p 8000:80 --name iobroker-adapterlist-php -v $(pwd)/index.php:/var/www/html/index.php haus-automation/iobroker-adapterlist-php:8.3-apache
 ```
+
+Open `http://localhost:8000` afterwards.
 
 ## Dependencies
 
 - Docker (optional)
-- PHP 8.1
+- PHP 8.3
 - Bootstrap 5.2.0 (jsDelivr)
 
 ## License

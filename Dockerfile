@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.3-apache
 
 RUN echo "Europe/Berlin" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata
 
