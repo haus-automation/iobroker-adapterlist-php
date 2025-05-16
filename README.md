@@ -22,7 +22,7 @@ docker run --rm -ti -p 8000:80 --name iobroker-adapterlist-php -v $(pwd)/index.p
 
 The MIT License (MIT)
 
-Copyright (c) 2022 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2025 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
